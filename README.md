@@ -2,4 +2,3 @@
 
 This repository contains sample exercises
 
-Thank you
