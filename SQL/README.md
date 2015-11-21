@@ -58,6 +58,7 @@ In order to fix optd_por_public.csv file we need to save a clean copy of this fi
 csvgrep -d '^' optd_por_public.csv -c moddate -r '[0-9]{4}-[0-9]{2}-[0-9]{2}' > optd_clean.csv
 less optd_clean.csv
 chmod 777 optd_clean.csv
+```
 
 ## Backup the database
 In order to make a copy of our database we can use *pg_dump*
