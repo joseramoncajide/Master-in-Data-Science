@@ -11,7 +11,8 @@ This repository contains sample exercises
 ## Lectures
 * [Deep Learning](https://goodfeli.github.io/dlbook/)
 * [Linear Algebra](https://goodfeli.github.io/dlbook/contents/linear_algebra.html)
+* *[Similarity matrix](https://en.wikipedia.org/wiki/Similarity_matrix)
 * [TensorFlow](http://www.tensorflow.org/)
-* [Similarity matrix](https://en.wikipedia.org/wiki/Similarity_matrix)
+
 
 
