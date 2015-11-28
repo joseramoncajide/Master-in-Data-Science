@@ -8,3 +8,6 @@ This repository contains sample exercises
 * https://csvkit.readthedocs.org
 * https://source.opennews.org/en-US/articles/eleven-awesome-things-you-can-do-csvkit/ 
 
+## Lectures
+* [Deep Learning](https://goodfeli.github.io/dlbook/)
+
