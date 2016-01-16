@@ -17,13 +17,18 @@ y <- iris$Species
 # Ejercicio: crea el vector que numera las filas de iris (es decir, los números del 1 hasta
 # el número de filas de iris)
 
+iris
+z <- row.names(iris)
+z <- 1:nrow(iris)
+
+
 ## inspección de vectores
 length(x)
 table(y)         # ¡muy importante!
 summary(y)    
 
 ## funciones
-fivenum(x)   # los "cinco números característicos" de un vector 
+fivenum(x)   # los "cinco números característicos" de un vector (min, max, mediana, quartiles)
 mean(x) 
 max(x) 
 median(x) 
@@ -31,17 +36,22 @@ sum(x)
 prod(x)    
 # ...         y miles más
 
+# sort(table(x), des=T)
 
 ## selección
 # se usa el corchete; ahora sin comas porque los vectores son unidimensionales
 x <- x^2
 x[1:3] 
 x[x > 25] 
-x[3:1] 
+x[3:1] #invertidas 
 x[-(1:2)] 
 x[-length(x)]
 
 ## ejercicio: seleccionar todos menos los dos últimos
+head(x, n=length(x)-2)
+x[-((length(x)-1):(length(x)))] 
+x[-tail(x,2)]
+x[1:length((x)-2)]
 
 
 # cambiar parte de los componentes de un vector
@@ -60,11 +70,31 @@ sample(x, 100, replace = TRUE)  # manera correcta
 #   Pista: recuerda que "ordenar" era "seleccionar ordenadamente"; de igual manera, 
 #   en una tabla, muestrear será...
 
+dim(iris)
+indices <- sample(1:nrow(iris), 20)
+iris.training <- iris[indices,]
+iris.test <- iris[-(indices),]
+
+#filas pares de iris
+filaspares <- seq(from = 0, to = nrow(iris), by = 2)
+iris[filaspares,]
+
 # Nota: el muestreo es importante en distintos ámbitos. Por ejemplo, a la hora de hacer tests A/B: 
 # ¿qué observaciones van al grupo A y cuáles al B?
 
+
+
 # Ejercicio: parte iris en dos partes iguales (75 observaciones cada uno) con las filas elegidas 
 # al azar (¡y complementarias!)
+
+train_ind <- sample(seq_len(nrow(iris)), size = 75)
+train_ind <- sample(c(nrow(iris)), size = 75)
+train <- iris[train_ind, ]
+test <- iris[-train_ind, ]
+
+train_ind <- sample(1:nrow(iris), 100)
+train <- iris[train_ind,]
+test <- iris[-train_ind,]
 
 ## Generación de vectores
 
@@ -80,6 +110,9 @@ c(1, 5, -1, 4)
 
 seq(1, 4)
 
+# Pares del 2 al 50
+seq(2, 150 , 2)
+
 # Y está estrechamente emparentada con la función rep()
 
 rep(1:4, 4)
@@ -87,6 +120,8 @@ rep(1:4, each = 4)
 
 # Ejercicio: Crea el patrón 1, 1.1, 1.2,..., 2. (Nota: hay varias respuestas).
 #   Pista: consulta qué hace el argumento "by" de seq.
+
+seq(1,2, by = 1/10)
 
 # Los siguientes ejemplos ilustran cómo crear patrones más complejos usando rep()
 
@@ -104,7 +139,9 @@ rep(1:4, each = 2, times = 3)
 
 ## generación de vectores con una determinada distribución estadística
 x.uniforme <- runif(10)
+hist(x.uniforme)
 x.normal   <- rnorm(13)
+hist(x.normal)
 hist(rnorm(1000))
 hist(runif(1000))
 hist(rpois(1000, 5))
@@ -112,13 +149,34 @@ hist(rpois(1000, 5))
 # Ejercicio: consulta la ayuda de rnorm, de runif, de rpois... ¿qué tienen en común?
 # Ejercicio: busca cómo muestrear la distribución gamma
 
+# rnorm: Para muestrear: saca datos aleatorios
+# dnorm: La densidad: el alto de la curva de distribución normal
+dnorm(0) #alto en el punto central (media 0)
+dnorm(1) #alto en un punto a la derecha
+# pnorm: la integral de la función, de la curva
+pnorm(0)
+pnorm(-3) # 1 por 1000 de probabilidad se sacar un punto por debajo
+pnorm(3)
+
+#qnorm es la inversa de la pnorm
+qnorm(0.001349898) #inverso de pnorm(3)
+qnorm(0.9986501) 
+
+#distribución t student
+hist(rt(1000, 4))
+
+#ditribución gamma
+hist(rgamma(1000, 4))
+
+#ditribución pois para casos aleatorios, conteo
+hist(rpois(100, 4))
 
 ## ordenación de vectores
 
 x <- c(4, 5, 3, 2, 1, 2)
 sort(x)           # ordena los elementos del vector
 
-order(x)
+order(x) # devuelve el índice del más pequeño
 x[order(x)]       # equivale a sort(x)
 
 # Nota: ¿recuerdas cómo ordenábamos tablas?
@@ -150,11 +208,13 @@ length(x)
 x <- 1:10
 2*x 
 2*x + 1
+2*x + 1:2
 x^2 
 x * rev(x) 
 sum(x) 
 prod(x) 
 cumsum(x)
+
 
 
 # suma de los términos de una progresión geométrica
@@ -173,6 +233,14 @@ sum(res)
 # si el precio hoy es a, mañana es a * exp(lambda), donde lambda tiene distribución N(a,b)
 # pista: genera las lambdas y luego cumprod para obtener cotizaciones a lo lardo de n sesiones 
 
+tmp <- rnorm(200, 0.001, 0.1)
+res <- cumprod(exp(tmp))
+plot(res, type = 'l')
+
+#con la distr. t de student
+tmp <- (0.02 * rt(200, df = 4)) + 0.001
+res <- cumprod(exp(tmp))
+plot(res, type = 'l')
 
 # un ejercicio más sofisticado: calculadora de cuotas de hipotecas:
 
@@ -217,8 +285,19 @@ capital / sum(1 / (1+interes.mensual)^meses)
 # Ejercicio: suma un millón de términos de la fórmula de Leibniz (http://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80)
 #   para aproximar pi
 
+tmp <- seq(from = 0, to =1000000)
+tmp <- (-1)^tmp/ (2*tmp+1)
+sum(tmp)
+sum(tmp) * 4 # pi
+plot(cumsum(tmp[1:20]), type = 'l') # lo datos van convergen a pi/4
+
 # Ejercicio: calcular el valor medio de la longitud de los pétalos de iris usando mean()
 # Ejercicio: lo mismo, usando sum() y length()
+
+names(iris)
+mean(iris$Petal.Length)
+
+
 
 # Ejercicio: haz mean(sample(iris$Sepal.Length, replace = T)) varias veces. Salen números que
 #   se parecen a la media de iris$Sepal.Lenght... ¿Te suena a algo?
@@ -226,14 +305,16 @@ capital / sum(1 / (1+interes.mensual)^meses)
 #----------------------------------------------------------------------------
 # La función tapply
 #----------------------------------------------------------------------------
-
+?tapply
 tapply(iris$Petal.Length, iris$Species, mean)
 
 # La función tapply aplica una función (mean) a un vector (longitud del pétalo) en
 #   cada uno de los trozos definidos por iris$Species (¿como un group by?)
 
 # Ejercicio: calcula el valor medio de la temperatura en cada mes de Nueva York (usa airquality)
+tapply(airquality$Temp, airquality$Month, mean)
 
+tapply(airquality$Temp, airquality$Month, fivenum)
 
 #----------------------------------------------------------------------------
 # Listas
@@ -247,11 +328,19 @@ length(iris)
 
 # Son útiles como "contenedores" de información:
 
+# datos <- as.data.frame(UCBAdmissions)
+# datos$Admit <- datos$Admit == "Admitted"
+# modelo.con.dept <- glm(Admit ~ Gender + Dept, data = datos, weights = Freq, family = binomial())
+# summary(modelo.con.dept)
+
+
 is.list(modelo.con.dept)
 
 length(modelo.con.dept)
 names(modelo.con.dept)
 str(modelo.con.dept)
+
+class(modelo.con.dept$data)
 
 names(modelo.con.dept)
 
@@ -262,13 +351,21 @@ modelo.con.dept[["coefficients"]]
 # Creación de listas:
 mi.lista <- list(a = 1:3, b = c("hola", "caracola"))
 mi.lista$z <- matrix(1:4, 2, 2)
+mi.lista
+
+
 
 # Usos avanzados: los ficheros XML o JSON se "parsean" como listas en R.
 
 # Ejercicio: ¿qué función serviría para concatenar dos listas?
-# Ejercicio: ¿cómo borrarías un elemento de una lista?
-# Ejercicio: ¿qué crees que pasaría si haces mi.lista[1:2]?
 
+c()
+
+# Ejercicio: ¿cómo borrarías un elemento de una lista?
+
+# Ejercicio: ¿qué crees que pasaría si haces mi.lista[1:2]?
+mi.lista[1:2]
+mi.lista[[1:2]]
 
 
 #############################################################################
