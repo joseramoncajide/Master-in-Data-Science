@@ -20,3 +20,5 @@ from pyspark import SparkContext
 sc = SparkContext(appName = 'outliers_jose')
 
 # Lo subimos al cluster
+
+PYSPARK_PYTHON=/opt/cloudera/parcels/Anaconda/bin/python spark-submit script.py
