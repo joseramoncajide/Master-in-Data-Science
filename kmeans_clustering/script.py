@@ -1,6 +1,5 @@
-from pyspark import SparkContext
 # coding: utf-8
-
+from pyspark import SparkContext
 # In[1]:
 
 sc = SparkContext(appName = 'outliers_jose')
@@ -132,7 +131,7 @@ bycluster.take(3)
 
 # In[ ]:
 
-def calc_avg_reduce()
+
 
 
 # In[33]:
