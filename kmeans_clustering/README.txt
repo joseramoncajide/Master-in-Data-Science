@@ -2,7 +2,7 @@ Cluster Access
 
 REMOTE_USER=kschool06
 ssh -p 22010 ${REMOTE_USER}@cms.hadoop.flossystems.net
-# Pass abcd1234
+# Pass 
 
 REMOTE_FOLDER="data_science"
 LOCAL_FILE="sales_segments.csv.gz"
@@ -177,3 +177,8 @@ tfidf.map(lambda (id_doc, diccionario_doc): (id_doc, devuelveme_query(query,dicc
 
 #5 primeros resultados de la búsqueda
 tfidf.map(lambda (id_doc, diccionario_doc): (id_doc, devuelveme_query(query,diccionario_doc ))).take(5)
+
+
+
+
+
